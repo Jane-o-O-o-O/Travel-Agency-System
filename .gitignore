@@ -1,0 +1,51 @@
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Build
+target/
+dist/
+node_modules/
+
+# Environment
+.env.local
+.env.*.local
+.log
+
+# Runtime
+*.log
+*.pid
+*.pid.lock
+
+# Application
+application-dev.yml
+application-prod.yml
+
+# Cache
+.cache/
+*.cache
+
+# OS
+Thumbs.db
+
+# Frontend
+frontend/node_modules
+frontend/.nuxt
+frontend/dist
+
+# Backend
+backend/target
+backend/.classpath
+backend/.factorypath
+backend/.settings
+
+# Docker
+.docker/
+
+# Local development
+mysql_data/
+redis_data/
