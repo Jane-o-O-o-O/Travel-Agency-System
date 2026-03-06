@@ -1,6 +1,7 @@
 package com.shishiji.travel.controller.system;
 
 import com.shishiji.travel.common.response.ApiResponse;
+import com.shishiji.travel.model.dto.LoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,10 @@ public class AuthController {
 
     @Operation(summary = "登录")
     @PostMapping("/login")
-    public ApiResponse<Object> login(
-            @RequestParam String username,
-            @RequestParam String password) {
+    public ApiResponse<Object> login(@RequestBody LoginRequest request) {
         
         // 演示登录：admin/admin123
-        if ("admin".equals(username) && "admin123".equals(password)) {
+        if ("admin".equals(request.getUsername()) && "admin123".equals(request.getPassword())) {
             return ApiResponse.success(new Object() {
                 public String token = "demo-token-" + System.currentTimeMillis();
                 public Object user = new Object() {
