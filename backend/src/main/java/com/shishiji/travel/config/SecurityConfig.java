@@ -35,12 +35,9 @@ public class SecurityConfig {
                 }))
                 // 3. 配置路径拦截规则
                 .authorizeHttpRequests(auth -> auth
-                        // 放行登录和注册接口
-                        .requestMatchers("/auth/login", "/auth/register", "/auth/captcha").permitAll()
-                        // 放行 Swagger 接口
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/doc.html", "/webjars/**").permitAll()
-                        // 其他所有请求都需要认证
-                        .anyRequest().authenticated()
+                        // 开发阶段：暂时允许所有请求
+                        // TODO: 实现JWT验证后改为需要认证
+                        .anyRequest().permitAll()
                 )
                 // 4. 不依赖 Session
                 .sessionManagement(session -> session

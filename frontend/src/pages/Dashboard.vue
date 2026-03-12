@@ -30,11 +30,11 @@
         </svg>
       </div>
       <div class="header-text">
-        <h1 class="dashboard-title">EXPEDITION CONTROL CONSOLE</h1>
-        <p class="dashboard-subtitle">Mission Overview & Journey Tracking</p>
+        <h1 class="dashboard-title">运营管理中心</h1>
+        <p class="dashboard-subtitle">旅行社经营数据一览</p>
       </div>
       <div class="header-stamp">
-        <span class="stamp-text">ACTIVE</span>
+        <span class="stamp-text">在线</span>
       </div>
     </div>
 
@@ -55,7 +55,7 @@
     <div class="journey-section">
       <div class="section-header">
         <div class="section-icon">🧭</div>
-        <h2 class="section-title">Recent Journeys</h2>
+        <h2 class="section-title">最近订单</h2>
         <div class="section-line"></div>
       </div>
       
@@ -92,25 +92,25 @@
       <div class="quick-actions">
         <div class="section-header">
           <div class="section-icon">⚡</div>
-          <h2 class="section-title">Quick Actions</h2>
+          <h2 class="section-title">快速操作</h2>
           <div class="section-line"></div>
         </div>
         <div class="action-buttons">
-          <button class="action-btn" @click="navigateTo('/customer')">
+          <button class="action-btn" @click="navigateToAdd('customers')">
             <span class="btn-icon">👥</span>
-            <span class="btn-label">New Traveler</span>
+            <span class="btn-label">新增旅客</span>
           </button>
-          <button class="action-btn" @click="navigateTo('/product')">
+          <button class="action-btn" @click="navigateToAdd('products')">
             <span class="btn-icon">🎫</span>
-            <span class="btn-label">New Journey</span>
+            <span class="btn-label">新增产品</span>
           </button>
-          <button class="action-btn" @click="navigateTo('/order')">
+          <button class="action-btn" @click="navigateToAdd('orders')">
             <span class="btn-icon">📋</span>
-            <span class="btn-label">New Booking</span>
+            <span class="btn-label">新增订单</span>
           </button>
-          <button class="action-btn" @click="navigateTo('/template')">
+          <button class="action-btn" @click="navigateToAdd('templates')">
             <span class="btn-icon">📍</span>
-            <span class="btn-label">New Route</span>
+            <span class="btn-label">新增模板</span>
           </button>
         </div>
       </div>
@@ -118,7 +118,7 @@
       <div class="travel-tips">
         <div class="section-header">
           <div class="section-icon">💡</div>
-          <h2 class="section-title">Travel Advisories</h2>
+          <h2 class="section-title">平台提示</h2>
           <div class="section-line"></div>
         </div>
         <div class="tips-scroll">
@@ -146,10 +146,10 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const statistics = ref([
-  { icon: '📦', value: 0, label: 'Total Orders' },
-  { icon: '👥', value: 0, label: 'Travelers' },
-  { icon: '🌍', value: 0, label: 'Destinations' },
-  { icon: '🎫', value: 0, label: 'Open Tickets' }
+  { icon: '📦', value: 0, label: '总订单数' },
+  { icon: '👥', value: 0, label: '旅客总数' },
+  { icon: '🌍', value: 0, label: '目的地数' },
+  { icon: '🎫', value: 0, label: '待处理工单' }
 ])
 
 const recentOrders = ref([
@@ -194,17 +194,17 @@ const getStatusClass = (status: string): string => {
 
 const getStatusLabel = (status: string): string => {
   const labelMap: Record<string, string> = {
-    DRAFT: 'DRAFT',
-    PENDING_CONFIRM: 'PENDING',
-    CONFIRMED: 'CONFIRMED',
-    COMPLETED: 'COMPLETED',
-    CANCELLED: 'CANCELLED'
+    DRAFT: '草稿',
+    PENDING_CONFIRM: '待确认',
+    CONFIRMED: '已确认',
+    COMPLETED: '已完成',
+    CANCELLED: '已取消'
   }
   return labelMap[status] || status
 }
 
-const navigateTo = (path: string) => {
-  router.push(path)
+const navigateToAdd = (path: string) => {
+  router.push({ path: `/${path}`, query: { add: '1' } })
 }
 
 onMounted(() => {

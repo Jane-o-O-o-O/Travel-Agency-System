@@ -18,8 +18,8 @@
             <polygon points="50,25 55,50 50,53 45,50" class="emblem-arrow"/>
           </svg>
         </div>
-        <h1 class="login-title">VOYAGE CONSOLE</h1>
-        <p class="login-subtitle">时拾纪旅行管理系统</p>
+        <h1 class="login-title">旅行社管理系统</h1>
+        <p class="login-subtitle">时拾纪官方平台</p>
         <div class="title-ornament"></div>
       </div>
 
@@ -59,127 +59,32 @@
           :disabled="loading"
         >
           <span class="btn-icon">🚀</span>
-          <span class="btn-text">{{ loading ? '验证中...' : '开始探险' }}</span>
+          <span class="btn-text">{{ loading ? '验证中...' : '登 录' }}</span>
           <span class="btn-shine"></span>
         </button>
 
-        <button 
-          type="button" 
-          class="register-btn"
-          @click="showRegister = true"
-        >
+        <router-link to="/portal/register" class="register-btn">
           <span class="btn-icon">✨</span>
-          <span class="btn-text">申请旅行者证件</span>
-        </button>
+          <span class="btn-text">我是用户，去用户端注册</span>
+        </router-link>
 
         <div class="welcome-note">
           <span class="note-icon">💡</span>
-          <span class="note-text">默认账号: admin / admin123</span>
+          <span class="note-text">默认管理员: admin / admin123 · 用户请访问</span>
+          <router-link to="/portal/home" class="portal-link">用户端入口</router-link>
         </div>
       </form>
 
       <!-- Decorative Stamps -->
       <div class="passport-stamps">
-        <div class="stamp stamp-1">VERIFIED</div>
-        <div class="stamp stamp-2">SECURED</div>
-      </div>
-    </div>
-
-    <!-- Register Modal -->
-    <div v-if="showRegister" class="register-modal" @click.self="showRegister = false">
-      <div class="register-card">
-        <div class="modal-header">
-          <h2 class="modal-title">申请旅行者证件</h2>
-          <button class="close-btn" @click="showRegister = false">✕</button>
-        </div>
-        
-        <form @submit.prevent="handleRegister" class="register-form">
-          <div class="form-field">
-            <label class="field-label">
-              <span class="label-icon">👤</span>
-              <span class="label-text">用户名</span>
-            </label>
-            <input 
-              v-model="registerForm.username"
-              type="text"
-              placeholder="设置您的用户名"
-              class="voyage-input"
-              required
-            />
-          </div>
-
-          <div class="form-field">
-            <label class="field-label">
-              <span class="label-icon">📛</span>
-              <span class="label-text">真实姓名</span>
-            </label>
-            <input 
-              v-model="registerForm.realName"
-              type="text"
-              placeholder="输入您的真实姓名"
-              class="voyage-input"
-              required
-            />
-          </div>
-
-          <div class="form-field">
-            <label class="field-label">
-              <span class="label-icon">📧</span>
-              <span class="label-text">电子邮件</span>
-            </label>
-            <input 
-              v-model="registerForm.email"
-              type="email"
-              placeholder="your@email.com"
-              class="voyage-input"
-              required
-            />
-          </div>
-
-          <div class="form-field">
-            <label class="field-label">
-              <span class="label-icon">🔐</span>
-              <span class="label-text">密码</span>
-            </label>
-            <input 
-              v-model="registerForm.password"
-              type="password"
-              placeholder="设置您的密码"
-              class="voyage-input"
-              required
-            />
-          </div>
-
-          <div class="form-field">
-            <label class="field-label">
-              <span class="label-icon">🔒</span>
-              <span class="label-text">确认密码</span>
-            </label>
-            <input 
-              v-model="registerForm.confirmPassword"
-              type="password"
-              placeholder="再次输入密码"
-              class="voyage-input"
-              required
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            class="embark-btn"
-            :disabled="loading"
-          >
-            <span class="btn-icon">✨</span>
-            <span class="btn-text">{{ loading ? '处理中...' : '完成注册' }}</span>
-            <span class="btn-shine"></span>
-          </button>
-        </form>
+        <div class="stamp stamp-1">已验证</div>
+        <div class="stamp stamp-2">安全</div>
       </div>
     </div>
 
     <!-- Footer Credits -->
     <div class="journey-footer">
-      <p>Powered by Voyage Console © 2026</p>
+      <p>©2026 时拾纪旅行社 保留所有权利</p>
     </div>
   </div>
 </template>
@@ -192,19 +97,10 @@ import apiClient from '@/utils/api'
 
 const router = useRouter()
 const loading = ref(false)
-const showRegister = ref(false)
 
 const form = ref({
   username: 'admin',
   password: 'admin123'
-})
-
-const registerForm = ref({
-  username: '',
-  password: '',
-  confirmPassword: '',
-  realName: '',
-  email: ''
 })
 
 const handleLogin = async () => {
@@ -235,40 +131,6 @@ const handleLogin = async () => {
   }
 }
 
-const handleRegister = async () => {
-  if (!registerForm.value.username || !registerForm.value.password) {
-    ElMessage.warning('请填写用户名和密码')
-    return
-  }
-  
-  if (registerForm.value.password !== registerForm.value.confirmPassword) {
-    ElMessage.error('两次密码输入不一致')
-    return
-  }
-
-  loading.value = true
-  try {
-    await apiClient.post('/auth/register', {
-      username: registerForm.value.username,
-      password: registerForm.value.password,
-      realName: registerForm.value.realName,
-      email: registerForm.value.email
-    })
-    
-    ElMessage.success({
-      message: '注册成功！请使用新账号登录 🎉',
-      duration: 2000
-    })
-    
-    showRegister.value = false
-    form.value.username = registerForm.value.username
-    form.value.password = ''
-  } catch (error) {
-    ElMessage.error('注册失败，请稍后重试')
-  } finally {
-    loading.value = false
-  }
-}
 </script>
 
 <style scoped>
@@ -585,6 +447,8 @@ const handleRegister = async () => {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 .register-btn:hover {
@@ -603,13 +467,23 @@ const handleRegister = async () => {
   border-radius: 4px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px 10px;
   font-size: 13px;
   color: #2d3748;
 }
 
 .note-icon {
   font-size: 16px;
+}
+
+.portal-link {
+  color: var(--voyage-sunset);
+  font-weight: 600;
+  text-decoration: none;
+}
+.portal-link:hover {
+  text-decoration: underline;
 }
 
 .passport-stamps {

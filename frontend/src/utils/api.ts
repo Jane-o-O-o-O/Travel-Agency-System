@@ -7,10 +7,11 @@ const apiClient = axios.create({
   timeout: 30000
 })
 
-// 请求拦截器
+// 请求拦截器：门户接口用 portalToken，管理端用 token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
+    const isPortal = config.url?.includes('/portal/')
+    const token = isPortal ? localStorage.getItem('portalToken') : localStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

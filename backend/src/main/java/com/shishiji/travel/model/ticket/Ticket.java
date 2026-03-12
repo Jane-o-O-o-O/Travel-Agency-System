@@ -3,9 +3,12 @@ package com.shishiji.travel.model.ticket;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shishiji.travel.model.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDate;
 
 /**
  * 工单系统
@@ -29,9 +32,14 @@ public class Ticket extends BaseEntity {
     private Long orderId;
     
     /**
-     * 客户ID
+     * 客户ID(管理端关联，门户提交可空)
      */
     private Long customerId;
+    
+    /**
+     * 门户用户ID
+     */
+    private Long portalUserId;
     
     /**
      * 问题类型(COMPLAINT/MODIFY/REFUND/CONSULT)
@@ -47,6 +55,37 @@ public class Ticket extends BaseEntity {
      * 标题
      */
     private String title;
+    
+    /**
+     * 意向主题(非遗/亲子/摄影等)
+     */
+    private String theme;
+    
+    /**
+     * 出行人数
+     */
+    private Integer peopleCount;
+    
+    /**
+     * 出行天数
+     */
+    private Integer days;
+    
+    /**
+     * 期望日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate expectedDate;
+    
+    /**
+     * 特殊要求
+     */
+    private String specialRequirement;
+    
+    /**
+     * 联系方式
+     */
+    private String contactInfo;
     
     /**
      * 描述
