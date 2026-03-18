@@ -37,7 +37,6 @@ frontend/.nuxt
 frontend/dist
 
 # Backend
-backend/target
 backend/.classpath
 backend/.factorypath
 backend/.settings

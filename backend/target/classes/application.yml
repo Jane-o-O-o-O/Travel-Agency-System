@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: travel-platform
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/travel_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterSetResults=utf8mb4
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 10000ms
+    database: 0
+  
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-executor-type: reuse
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.shishiji.travel.model
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    root: INFO
+    com.shishiji: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+jwt:
+  secret: shishiji-travel-platform-secret-key-2024
+  expiration: 86400000
+
+knife4j:
+  openapi:
+    title: 时拾纪旅行社管理平台 API
+    description: 完整的旅行社管理系统
+    version: 1.0.0
+    contact:
+      name: Admin
