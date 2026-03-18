@@ -1,36 +1,20 @@
 import apiClient from '@/utils/api'
 
 export interface Ticket {
-  id: number | string
+  id: number
   ticketNo: string
-  orderId?: number
-  customerId?: number
-  portalUserId?: number
+  orderId: number
+  customerId: number
   problemType: string
   priority: string
   title: string
-  theme?: string
-  peopleCount?: number
-  days?: number
-  expectedDate?: string
-  specialRequirement?: string
-  contactInfo?: string
   description: string
-  handlerUserId?: number
+  handlerUserId: number
   status: string
-  firstResponseTime?: number
-  resolutionTime?: number
+  firstResponseTime: number
+  resolutionTime: number
   createdAt: string
-  updatedAt?: string
-}
-
-export interface TicketReply {
-  id: number | string
-  ticketId: number | string
-  fromType: string
-  fromUserId: number | string
-  content: string
-  createdAt: string
+  updatedAt: string
 }
 
 export interface PageResponse<T> {
@@ -44,21 +28,15 @@ export const ticketApi = {
   list: (pageNo: number, pageSize: number, searchKey?: string) =>
     apiClient.get('/ticket/list', { params: { pageNo, pageSize, searchKey } }),
   
-  getById: (id: number | string) =>
+  getById: (id: number) =>
     apiClient.get(`/ticket/${id}`),
-  
-  getReplies: (id: number | string) =>
-    apiClient.get(`/ticket/${id}/replies`),
-  
-  addReply: (id: number | string, data: { content: string }) =>
-    apiClient.post(`/ticket/${id}/reply`, data),
   
   create: (data: Omit<Ticket, 'id' | 'createTime' | 'updateTime'>) =>
     apiClient.post('/ticket', data),
   
-  update: (id: number | string, data: Partial<Ticket>) =>
+  update: (id: number, data: Partial<Ticket>) =>
     apiClient.put(`/ticket/${id}`, data),
   
-  delete: (id: number | string) =>
+  delete: (id: number) =>
     apiClient.delete(`/ticket/${id}`)
 }

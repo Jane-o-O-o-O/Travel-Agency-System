@@ -1,0 +1,10 @@
+# 关键修正已完成：
+## Order/List.vue
+- ✅ 导入路径修正：从 '@/utils/api/ticket' → '@/utils/api/order'
+- ✅ 类型导入修正：TourOrder
+- 表格字段修正需要：price → amount, participantCount → peopleCount
+
+## Ticket/List.vue  
+- ✅ 导入路径修正：从 '@/utils/api/order' → '@/utils/api/ticket'
+- ✅ 类型导入修正：Ticket
+- 表格字段修正需要：createTime → createdAt, 添加 ticketNo

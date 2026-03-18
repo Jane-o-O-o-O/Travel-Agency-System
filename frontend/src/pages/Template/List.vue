@@ -75,13 +75,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { templateApi, type ItineraryTemplate } from '@/utils/api/template'
 import type { FormInstance } from 'element-plus'
 
-const route = useRoute()
-const router = useRouter()
 const templates = ref<ItineraryTemplate[]>([])
 const pageSize = ref(10)
 const total = ref(0)
@@ -108,10 +105,6 @@ const rules = {
 
 onMounted(() => {
   loadData()
-  if (route.query.add === '1') {
-    handleAdd()
-    router.replace({ path: route.path })
-  }
 })
 
 const loadData = async () => {

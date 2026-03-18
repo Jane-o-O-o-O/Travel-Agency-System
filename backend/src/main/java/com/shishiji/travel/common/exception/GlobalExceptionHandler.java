@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         String message = "数据操作失败";
         if (e.getMessage() != null) {
             if (e.getMessage().contains("Duplicate")) {
-                message = "数据已存在（请检查唯一字段是否重复）";
+                message = "数据已存在（可能是手机号重复）";
             } else if (e.getMessage().contains("Cannot add")) {
                 message = "违反外键约束";
             } else if (e.getMessage().contains("NOT NULL")) {

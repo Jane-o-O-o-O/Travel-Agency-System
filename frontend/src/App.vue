@@ -1,9 +1,6 @@
 <template>
   <div id="app" class="voyage-portal">
-    <!-- 用户端门户：仅路由出口，由 PortalLayout 提供布局 -->
-    <router-view v-if="isPortal" />
-    <!-- Vintage Paper Texture Overlay (管理端) -->
-    <template v-else>
+    <!-- Vintage Paper Texture Overlay -->
     <div class="paper-texture"></div>
     
     <el-container v-if="!hideLayout" class="main-container">
@@ -77,7 +74,6 @@
     <div v-else class="login-wrapper">
       <router-view />
     </div>
-    </template>
   </div>
 </template>
 
@@ -99,7 +95,6 @@ const routes = [
   { path: '/tickets', label: '服务工单', icon: '🎫' }
 ]
 
-const isPortal = computed(() => route.path.startsWith('/portal'))
 const hideLayout = computed(() => route.path === '/login')
 
 const currentRouteTitle = computed(() => {
