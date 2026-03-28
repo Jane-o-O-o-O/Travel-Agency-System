@@ -73,16 +73,32 @@ const rules: FormRules = {
 
 const submit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate().catch(() => {})
+  const isValid = await formRef.value.validate().then(() => true).catch(() => false)
+  if (!isValid) return
+
+  const theme = form.theme.trim()
+  const specialRequirement = form.specialRequirement.trim()
+  const contactInfo = form.contactInfo.trim()
+
+  if (!theme) {
+    ElMessage.warning('请选择意向主题')
+    return
+  }
+
+  if (!contactInfo) {
+    ElMessage.warning('请填写联系方式')
+    return
+  }
+
   loading.value = true
   try {
     await portalTicketApi.submit({
-      theme: form.theme,
+      theme,
       peopleCount: form.peopleCount,
       days: form.days,
       expectedDate: form.expectedDate || undefined,
-      specialRequirement: form.specialRequirement || undefined,
-      contactInfo: form.contactInfo
+      specialRequirement: specialRequirement || undefined,
+      contactInfo
     })
     ElMessage.success('提交成功，我们会在工单中与您沟通')
     router.push('/portal/my-tickets')

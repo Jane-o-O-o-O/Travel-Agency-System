@@ -12,4 +12,6 @@ public interface PortalUserService {
     PortalUser getById(Long id);
     
     PortalUser register(PortalUser user, String rawPassword);
+
+    PortalUser updateProfile(Long id, PortalUser profile);
 }

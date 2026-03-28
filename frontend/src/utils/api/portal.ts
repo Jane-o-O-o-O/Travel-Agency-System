@@ -1,5 +1,13 @@
 import apiClient from '@/utils/api'
 
+export interface PortalUserProfile {
+  id?: number | string
+  username?: string
+  realName?: string
+  phone?: string
+  email?: string
+}
+
 export const portalAuthApi = {
   login: (data: { username: string; password: string }) =>
     apiClient.post('/portal/auth/login', data),
@@ -10,7 +18,10 @@ export const portalAuthApi = {
     realName?: string
     phone?: string
     email?: string
-  }) => apiClient.post('/portal/auth/register', data)
+  }) => apiClient.post('/portal/auth/register', data),
+  profile: () => apiClient.get('/portal/auth/profile'),
+  updateProfile: (data: Pick<PortalUserProfile, 'realName' | 'phone' | 'email'>) =>
+    apiClient.put('/portal/auth/profile', data)
 }
 
 export interface PortalTicketSubmit {

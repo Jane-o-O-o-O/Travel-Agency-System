@@ -37,7 +37,11 @@
         <el-table-column prop="orderNo" label="订单号" width="180" />
         <el-table-column prop="customerId" label="客户ID" width="120" />
         <el-table-column prop="status" label="状态" width="120" />
-        <el-table-column prop="amount" label="金额" width="120" />
+        <el-table-column label="价格" width="140" align="right">
+          <template #default="{ row }">
+            {{ formatAmount(row.amount) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="peopleCount" label="参与人数" width="120" />
         <el-table-column prop="startDate" label="出发日期" width="150" />
         <el-table-column label="操作" width="220">
@@ -188,6 +192,17 @@ const resetSearch = () => {
   searchStatus.value = ''
   currentPage.value = 1
   loadData()
+}
+
+const formatAmount = (value?: number | string | null) => {
+  if (value === null || value === undefined || value === '') {
+    return '-'
+  }
+  const amount = Number(value)
+  if (!Number.isFinite(amount)) {
+    return String(value)
+  }
+  return `¥${amount.toFixed(2)}`
 }
 
 const handleAdd = () => {

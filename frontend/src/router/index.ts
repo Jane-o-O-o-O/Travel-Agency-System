@@ -20,6 +20,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'home', component: () => import('@/pages/portal/PortalHome.vue'), meta: { title: '首页' } },
       { path: 'login', component: () => import('@/pages/portal/PortalLogin.vue'), meta: { title: '登录' } },
       { path: 'register', component: () => import('@/pages/portal/PortalRegister.vue'), meta: { title: '注册' } },
+      { path: 'profile', component: () => import('@/pages/portal/PortalProfile.vue'), meta: { title: '个人中心', requirePortalAuth: true } },
       { path: 'submit-ticket', component: () => import('@/pages/portal/PortalSubmitTicket.vue'), meta: { title: '提交工单', requirePortalAuth: true } },
       { path: 'my-tickets', component: () => import('@/pages/portal/PortalMyTickets.vue'), meta: { title: '我的工单', requirePortalAuth: true } },
       { path: 'ticket/:id', component: () => import('@/pages/portal/PortalTicketDetail.vue'), meta: { title: '工单详情', requirePortalAuth: true } }
@@ -49,6 +50,11 @@ const routes: RouteRecordRaw[] = [
     path: '/orders',
     component: () => import('@/pages/Order/List.vue'),
     meta: { title: '订单管理' }
+  },
+  {
+    path: '/revenue',
+    component: () => import('@/pages/Revenue.vue'),
+    meta: { title: '营收管理' }
   },
   {
     path: '/resources',

@@ -30,6 +30,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { portalAuthApi } from '@/utils/api/portal'
+import { setPortalSession } from '@/utils/portalUser'
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
@@ -47,8 +48,7 @@ const handleLogin = async () => {
   try {
     const res: any = await portalAuthApi.login(form)
     if (res && res.token) {
-      localStorage.setItem('portalToken', res.token)
-      localStorage.setItem('portalUserInfo', JSON.stringify(res.userInfo || {}))
+      setPortalSession(res.token, res.userInfo || {})
       ElMessage.success('登录成功')
       router.push('/portal/my-tickets')
     }

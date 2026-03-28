@@ -26,14 +26,21 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => {
     const data = response.data
+    const isPortal = response.config.url?.includes('/portal/')
     
     // 根据code判断是否成功
     if (data.code === 0) {
       return data.data || data
     } else if (data.code === 401) {
       // 认证失败
-      localStorage.removeItem('token')
-      router.push('/login')
+      if (isPortal) {
+        localStorage.removeItem('portalToken')
+        localStorage.removeItem('portalUserInfo')
+        router.push('/portal/login')
+      } else {
+        localStorage.removeItem('token')
+        router.push('/login')
+      }
       ElMessage.error('认证已过期，请重新登录')
       return Promise.reject(data)
     } else {

@@ -15,6 +15,7 @@ E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\mapper\SysUserMapper.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\order\TourOrder.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\CustomerService.java
+E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\order\OrderRevenuePlanActual.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\controller\portal\PortalTicketController.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\config\JacksonConfig.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\resource\Resource.java
@@ -32,6 +33,7 @@ E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\system\SysRole.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\impl\TourOrderServiceImpl.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\base\BaseEntity.java
+E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\order\OrderRevenueTrendPoint.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\config\MetaObjectHandlerConfig.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\product\TourProductItem.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\config\WebMvcConfig.java
@@ -46,6 +48,7 @@ E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\dto\RegisterRequest.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\controller\resource\ResourceController.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\controller\product\ProductController.java
+E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\order\OrderRevenueStats.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\portal\PortalUser.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\ResourceService.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\controller\portal\PortalAuthController.java
@@ -64,12 +67,15 @@ E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\common\exception\GlobalExceptionHandler.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\TravelPlatformApplication.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\impl\ResourceServiceImpl.java
+E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\dto\PortalProfileUpdateRequest.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\mapper\TourOrderMapper.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\common\response\PageResult.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\mapper\ItineraryTemplateMapper.java
+E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\order\OrderRevenueDistributionItem.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\impl\CustomerServiceImpl.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\ItineraryTemplateService.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\system\SysPermission.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\common\response\ApiResponse.java
+E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\model\order\OrderRevenueRiskItem.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\config\SecurityConfig.java
 E:\接单项目\旅行社管理平台\backend\src\main\java\com\shishiji\travel\service\ResourceBookingService.java

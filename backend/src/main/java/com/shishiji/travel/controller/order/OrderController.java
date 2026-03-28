@@ -2,6 +2,7 @@ package com.shishiji.travel.controller.order;
 
 import com.shishiji.travel.common.response.ApiResponse;
 import com.shishiji.travel.common.response.PageResult;
+import com.shishiji.travel.model.order.OrderRevenueStats;
 import com.shishiji.travel.model.order.TourOrder;
 import com.shishiji.travel.service.TourOrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +41,12 @@ public class OrderController {
             return ApiResponse.fail("订单不存在");
         }
         return ApiResponse.success(order);
+    }
+
+    @Operation(summary = "订单营收统计")
+    @GetMapping("/revenue/stats")
+    public ApiResponse<OrderRevenueStats> revenueStats() {
+        return ApiResponse.success(tourOrderService.getRevenueStats());
     }
     
     @Operation(summary = "创建订单")

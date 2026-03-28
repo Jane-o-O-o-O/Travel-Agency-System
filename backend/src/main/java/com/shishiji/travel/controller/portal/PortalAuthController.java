@@ -2,6 +2,7 @@ package com.shishiji.travel.controller.portal;
 
 import com.shishiji.travel.common.response.ApiResponse;
 import com.shishiji.travel.model.dto.PortalLoginRequest;
+import com.shishiji.travel.model.dto.PortalProfileUpdateRequest;
 import com.shishiji.travel.model.dto.PortalRegisterRequest;
 import com.shishiji.travel.model.portal.PortalUser;
 import com.shishiji.travel.service.PortalUserService;
@@ -26,6 +27,35 @@ public class PortalAuthController {
     private final PortalUserService portalUserService;
     private final PasswordEncoder passwordEncoder;
 
+    private Long getPortalUserIdFromToken(String authorization) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return null;
+        }
+        String token = authorization.substring(7);
+        if (!token.startsWith("portal-")) {
+            return null;
+        }
+        String[] parts = token.split("-");
+        if (parts.length < 3) {
+            return null;
+        }
+        try {
+            return Long.parseLong(parts[2]);
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
+    }
+
+    private Map<String, Object> toUserInfo(PortalUser user) {
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", user.getId());
+        userInfo.put("username", user.getUsername());
+        userInfo.put("realName", user.getRealName());
+        userInfo.put("phone", user.getPhone());
+        userInfo.put("email", user.getEmail());
+        return userInfo;
+    }
+
     @Operation(summary = "用户端登录")
     @PostMapping("/login")
     public ApiResponse<Map<String, Object>> login(@RequestBody PortalLoginRequest request) {
@@ -37,15 +67,9 @@ public class PortalAuthController {
             return ApiResponse.fail("用户名或密码错误");
         }
         String token = "portal-" + System.currentTimeMillis() + "-" + user.getId();
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("id", user.getId());
-        userInfo.put("username", user.getUsername());
-        userInfo.put("realName", user.getRealName());
-        userInfo.put("phone", user.getPhone());
-        userInfo.put("email", user.getEmail());
         Map<String, Object> data = new HashMap<>();
         data.put("token", token);
-        data.put("userInfo", userInfo);
+        data.put("userInfo", toUserInfo(user));
         return ApiResponse.success(data);
     }
 
@@ -74,5 +98,41 @@ public class PortalAuthController {
         data.put("message", "注册成功，请登录");
         data.put("username", user.getUsername());
         return ApiResponse.success(data);
+    }
+
+    @Operation(summary = "获取门户用户资料")
+    @GetMapping("/profile")
+    public ApiResponse<Map<String, Object>> profile(
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Long portalUserId = getPortalUserIdFromToken(authorization);
+        if (portalUserId == null) {
+            return ApiResponse.fail("请先登录");
+        }
+        PortalUser user = portalUserService.getById(portalUserId);
+        if (user == null) {
+            return ApiResponse.fail("用户不存在");
+        }
+        return ApiResponse.success(toUserInfo(user));
+    }
+
+    @Operation(summary = "更新门户用户资料")
+    @PutMapping("/profile")
+    public ApiResponse<Map<String, Object>> updateProfile(
+            @RequestBody PortalProfileUpdateRequest request,
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        Long portalUserId = getPortalUserIdFromToken(authorization);
+        if (portalUserId == null) {
+            return ApiResponse.fail("请先登录");
+        }
+
+        PortalUser profile = new PortalUser();
+        profile.setRealName(request.getRealName());
+        profile.setPhone(request.getPhone());
+        profile.setEmail(request.getEmail());
+        PortalUser updated = portalUserService.updateProfile(portalUserId, profile);
+        if (updated == null) {
+            return ApiResponse.fail("用户不存在");
+        }
+        return ApiResponse.success(toUserInfo(updated));
     }
 }

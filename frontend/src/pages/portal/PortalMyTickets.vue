@@ -31,7 +31,7 @@
       :page-size="pageSize"
       :total="total"
       layout="prev, pager, next"
-      @current-change="load"
+      @current-change="handlePageChange"
       style="margin-top: 20px; justify-content: center;"
     />
   </div>
@@ -74,6 +74,11 @@ const load = async () => {
 
 const goDetail = (id: number | string) => {
   router.push('/portal/ticket/' + id)
+}
+
+const handlePageChange = (page: number) => {
+  pageNo.value = page
+  load()
 }
 
 onMounted(load)

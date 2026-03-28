@@ -19,6 +19,55 @@ export interface TourOrder {
   updatedAt: string
 }
 
+export interface OrderRevenueTrendPoint {
+  label: string
+  plannedIncome: number
+  actualIncome: number
+}
+
+export interface OrderRevenueDistributionItem {
+  label: string
+  count: number
+  amount: number
+  color: string
+}
+
+export interface OrderRevenuePlanActual {
+  plannedIncome: number
+  actualIncome: number
+  gapIncome: number
+  completionRate: number
+}
+
+export interface OrderRevenueRiskItem {
+  id: number
+  orderNo: string
+  customerId: number
+  status: string
+  payStatus: string
+  amount: number
+  progress: number
+  overdueDays: number
+}
+
+export interface OrderRevenueStats {
+  totalOrders: number
+  activeOrders: number
+  paidOrders: number
+  pendingReceiptOrders: number
+  totalPlannedIncome: number
+  totalActualIncome: number
+  weeklyTrendDirection: string
+  weeklyChangeRate: number
+  monthlyTrendDirection: string
+  monthlyChangeRate: number
+  weeklyTrend: OrderRevenueTrendPoint[]
+  monthlyTrend: OrderRevenueTrendPoint[]
+  statusDistribution: OrderRevenueDistributionItem[]
+  planActual: OrderRevenuePlanActual
+  collectionRisks: OrderRevenueRiskItem[]
+}
+
 export interface PageResponse<T> {
   list: T[]
   total: number
@@ -32,6 +81,9 @@ export const orderApi = {
   
   getById: (id: number) =>
     apiClient.get(`/order/${id}`),
+
+  revenueStats: () =>
+    apiClient.get('/order/revenue/stats'),
   
   create: (data: Omit<TourOrder, 'id' | 'createTime' | 'updateTime'>) =>
     apiClient.post('/order', data),

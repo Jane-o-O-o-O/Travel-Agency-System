@@ -47,3 +47,5 @@ backend/.settings
 # Local development
 mysql_data/
 redis_data/
+
+*.class

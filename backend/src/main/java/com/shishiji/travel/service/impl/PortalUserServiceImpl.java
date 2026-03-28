@@ -38,4 +38,19 @@ public class PortalUserServiceImpl implements PortalUserService {
         portalUserMapper.insert(user);
         return user;
     }
+
+    @Override
+    public PortalUser updateProfile(Long id, PortalUser profile) {
+        PortalUser existing = portalUserMapper.selectById(id);
+        if (existing == null) {
+            return null;
+        }
+
+        existing.setRealName(profile.getRealName());
+        existing.setPhone(profile.getPhone());
+        existing.setEmail(profile.getEmail());
+        existing.setUpdatedAt(LocalDateTime.now());
+        portalUserMapper.updateById(existing);
+        return existing;
+    }
 }

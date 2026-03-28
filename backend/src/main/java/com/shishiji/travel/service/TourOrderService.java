@@ -1,6 +1,7 @@
 package com.shishiji.travel.service;
 
 import com.shishiji.travel.common.response.PageResult;
+import com.shishiji.travel.model.order.OrderRevenueStats;
 import com.shishiji.travel.model.order.TourOrder;
 import com.shishiji.travel.model.resource.ResourceBooking;
 import java.util.List;
@@ -45,4 +46,9 @@ public interface TourOrderService {
      * 检测冲突
      */
     List<ResourceBooking> detectConflicts(Long orderId, List<ResourceBooking> bookings);
+
+    /**
+     * 营收统计看板
+     */
+    OrderRevenueStats getRevenueStats();
 }
