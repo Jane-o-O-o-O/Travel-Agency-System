@@ -12,13 +12,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 用户端门户 - 工单提交与查询
- * 请求头需带 Authorization: Bearer portal-xxx，此处简化从 header 取 userId（实际可用 JWT 解析）
+ * 门户工单提交与查询接口。
+ * 请求头需带 Authorization: Bearer portal-xxx，这里简化为从 token 解析 userId。
  */
 @RestController
 @RequestMapping("/portal/ticket")
@@ -29,16 +31,24 @@ public class PortalTicketController {
     private final TicketService ticketService;
     private final TicketReplyService ticketReplyService;
 
-    /** 从 token 解析门户用户ID（简化：token 格式 portal-timestamp-userId） */
+    /**
+     * 从 token 解析门户用户 ID，简化 token 格式为 portal-timestamp-userId。
+     */
     private Long getPortalUserIdFromToken(String authorization) {
-        if (authorization == null || !authorization.startsWith("Bearer ")) return null;
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return null;
+        }
         String token = authorization.substring(7);
-        if (!token.startsWith("portal-")) return null;
+        if (!token.startsWith("portal-")) {
+            return null;
+        }
         String[] parts = token.split("-");
         if (parts.length >= 3) {
             try {
                 return Long.parseLong(parts[2]);
-            } catch (NumberFormatException ignored) {}
+            } catch (NumberFormatException ignored) {
+                return null;
+            }
         }
         return null;
     }
@@ -52,24 +62,64 @@ public class PortalTicketController {
         if (portalUserId == null) {
             return ApiResponse.fail("请先登录");
         }
+
+        String title = trimToNull(request.getTitle());
+        String theme = trimToNull(request.getTheme());
+        String specialRequirement = trimToNull(request.getSpecialRequirement());
+        String contactInfo = trimToNull(request.getContactInfo());
+
+        if (!hasText(title) && !hasText(theme) && !hasText(specialRequirement)) {
+            return ApiResponse.fail("工单内容不能为空");
+        }
+        if (!hasText(theme)) {
+            return ApiResponse.fail("意向主题不能为空");
+        }
+        if (request.getPeopleCount() == null || request.getPeopleCount() <= 0) {
+            return ApiResponse.fail("出行人数必须大于 0");
+        }
+        if (request.getDays() == null || request.getDays() <= 0) {
+            return ApiResponse.fail("出行天数必须大于 0");
+        }
+        if (!hasText(contactInfo)) {
+            return ApiResponse.fail("联系方式不能为空");
+        }
+
+        String resolvedTitle = hasText(title) ? title : "意向：" + theme;
+        String summary = buildSummary(
+                theme,
+                request.getPeopleCount(),
+                request.getDays(),
+                request.getExpectedDate(),
+                specialRequirement,
+                contactInfo,
+                resolvedTitle
+        );
+
         Ticket ticket = new Ticket();
         ticket.setPortalUserId(portalUserId);
         ticket.setCustomerId(null);
         ticket.setOrderId(null);
-        ticket.setTitle(request.getTitle() != null && !request.getTitle().isEmpty()
-                ? request.getTitle()
-                : "意向：" + (request.getTheme() != null ? request.getTheme() : "定制"));
-        ticket.setTheme(request.getTheme());
+        ticket.setTitle(resolvedTitle);
+        ticket.setTheme(theme);
         ticket.setPeopleCount(request.getPeopleCount());
         ticket.setDays(request.getDays());
         ticket.setExpectedDate(request.getExpectedDate());
-        ticket.setSpecialRequirement(request.getSpecialRequirement());
-        ticket.setContactInfo(request.getContactInfo());
+        ticket.setSpecialRequirement(specialRequirement);
+        ticket.setContactInfo(contactInfo);
         ticket.setProblemType("CONSULT");
         ticket.setPriority("MID");
         ticket.setStatus("OPEN");
-        ticket.setDescription(request.getSpecialRequirement());
+        ticket.setDescription(summary);
         Ticket created = ticketService.create(ticket);
+
+        if (hasText(summary)) {
+            TicketReply reply = new TicketReply();
+            reply.setTicketId(created.getId());
+            reply.setFromType("PORTAL");
+            reply.setFromUserId(portalUserId);
+            reply.setContent(summary);
+            ticketReplyService.addReply(reply);
+        }
         return ApiResponse.success(created);
     }
 
@@ -138,5 +188,50 @@ public class PortalTicketController {
         reply.setContent(content.trim());
         ticketReplyService.addReply(reply);
         return ApiResponse.success(reply);
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.trim().isEmpty();
+    }
+
+    private String trimToNull(String value) {
+        if (value == null) {
+            return null;
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private String buildSummary(
+            String theme,
+            Integer peopleCount,
+            Integer days,
+            LocalDate expectedDate,
+            String specialRequirement,
+            String contactInfo,
+            String fallbackTitle) {
+        List<String> parts = new ArrayList<>();
+        if (hasText(theme)) {
+            parts.add("意向主题：" + theme);
+        }
+        if (peopleCount != null) {
+            parts.add("出行人数：" + peopleCount);
+        }
+        if (days != null) {
+            parts.add("出行天数：" + days);
+        }
+        if (expectedDate != null) {
+            parts.add("期望日期：" + expectedDate);
+        }
+        if (hasText(contactInfo)) {
+            parts.add("联系方式：" + contactInfo);
+        }
+        if (hasText(specialRequirement)) {
+            parts.add("特殊要求：" + specialRequirement);
+        }
+        if (parts.isEmpty()) {
+            return fallbackTitle;
+        }
+        return String.join("；", parts);
     }
 }

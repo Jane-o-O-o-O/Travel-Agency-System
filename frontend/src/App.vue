@@ -91,11 +91,14 @@ const routes = [
   { path: '/templates', label: '航线模板', icon: '✈️' },
   { path: '/products', label: '探险产品', icon: '🎒' },
   { path: '/orders', label: '订单追踪', icon: '📋' },
+  { path: '/revenue', label: '营收管理', icon: '💹' },
   { path: '/resources', label: '资源调度', icon: '🚗' },
   { path: '/tickets', label: '服务工单', icon: '🎫' }
 ]
 
-const hideLayout = computed(() => route.path === '/login')
+const hideLayout = computed(() => {
+  return route.path === '/login' || route.path.startsWith('/portal')
+})
 
 const currentRouteTitle = computed(() => {
   const current = routes.find(r => r.path === route.path)
